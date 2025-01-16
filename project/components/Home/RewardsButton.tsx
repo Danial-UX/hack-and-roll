@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button, Input } from '@rneui/themed'
+import { Button } from '@rneui/themed'
 import { useNavigation } from '@react-navigation/native';
 import { styles } from './styles';
 

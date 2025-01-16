@@ -3,20 +3,20 @@ import { Button } from '@rneui/themed'
 import { useNavigation } from '@react-navigation/native';
 import { styles } from './styles';
 
-const OrderButton: React.FC = () => {
+const ConfirmOrderButton: React.FC = () => {
     const navigation = useNavigation();
 
     const handlePress = () => {
-        navigation.navigate('Menu');
+        navigation.navigate('Purchase');
     };
 
     return (
         <Button
-            title="PRE-ORDER NOW"
+            title="Proceed to payment"
             onPress={handlePress}
-            buttonStyle={styles.orderbutton}
+            buttonStyle={styles.confirmButton}
         />
     );
 };
 
-export default OrderButton;
+export default ConfirmOrderButton;

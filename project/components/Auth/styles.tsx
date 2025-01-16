@@ -13,4 +13,7 @@ export const styles = StyleSheet.create({
     mt20: {
       marginTop: 20,
     },
+    button: {
+      backgroundColor: '#ff9e4d',
+    },
 })

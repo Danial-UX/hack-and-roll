@@ -8,6 +8,7 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { Ionicons } from '@expo/vector-icons';
 import Home from './components/Home/Home'
+import Order from './components/Order/Order'
 
 const Tab = createBottomTabNavigator();
 
@@ -20,8 +21,13 @@ function HomeScreen({ session }: { session: Session }) {
 function AccountScreen({ session }: { session: Session }) {
   return <Account session={session} />;
 }
+
 function MenuScreen({ session }: { session: Session }) {
   return <Menu session={session} />;
+}
+
+function OrderScreen({ session }: { session: Session }) {
+  return <Order session={session} />;
 }
 
 export default function App() {
@@ -51,6 +57,8 @@ export default function App() {
                   iconName = focused ? 'person' : 'person-outline';
                 } else if (route.name === 'Menu') {
                   iconName = focused ? 'fast-food' : 'fast-food-outline';
+                } else if (route.name === 'Order') {
+                  iconName = focused ? 'cart' : 'cart-outline';
                 }
                 return <Ionicons name={iconName} size={size} color={color} />;
               },
@@ -60,6 +68,7 @@ export default function App() {
           >
             <Tab.Screen name="Home" children={() => <HomeScreen session={session} />} />
             <Tab.Screen name="Menu" children={() => <MenuScreen session={session} />} />
+            <Tab.Screen name="Order" children={() => <OrderScreen session={session} />} />
             <Tab.Screen name="Account" children={() => <AccountScreen session={session} />} />
           </Tab.Navigator>
         </NavigationContainer>

@@ -84,6 +84,20 @@ export const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     display: 'flex',
-    padding: 0
+    padding: 0, 
+    backgroundColor: '#ff9e4d',
   },
+
+  // order confirmation
+  ordercontainer: { flex: 1, padding: 16 },
+  title: { fontSize: 24, fontWeight: 'bold', marginBottom: 8 },
+  subtitle: { fontSize: 16, color: 'gray', marginBottom: 16 },
+  item: { padding: 12, borderBottomWidth: 1, borderBottomColor: '#ddd' },
+  ordername: { fontSize: 18, fontWeight: '600' },
+  quantity: { fontSize: 16, color: 'gray' },
+  ordercost: { fontSize: 16, color: '#ff9e4d' },
+  errorText: { fontSize: 16, fontWeight: 'bold' },
+
+  // order confirmation button 
+  confirmButton: { backgroundColor: '#ff9e4d', padding: 16, borderRadius: 8, margin: 16 },
 });

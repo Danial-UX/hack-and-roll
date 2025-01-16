@@ -1,10 +1,9 @@
 import { useState, useEffect } from 'react'
 import { supabase } from '../../lib/supabase'
-import { Button, Input } from '@rneui/themed'
+import { Button, Tab } from '@rneui/themed'
 import { Session } from '@supabase/supabase-js'
-import { View, Text, Image, TouchableOpacity, FlatList, ActivityIndicator, Alert, } from 'react-native';
+import { View, Text, Image, FlatList, Alert, } from 'react-native';
 import { styles } from './styles';
-import { Tab, TabView } from '@rneui/themed';
 
 interface MenuItem {
   id: string;
@@ -16,7 +15,10 @@ interface MenuItem {
   cost: number;
 }
 
+import { useNavigation } from '@react-navigation/native';
+
 export default function Menu({ session }: { session: Session }) {
+  const navigation = useNavigation();
   const [menuItems, setMenuItems] = useState<MenuItem[]>([])
   const [loading, setLoading] = useState(true)
   const [quantities, setQuantities] = useState<{ [key: string]: number }>({})
@@ -73,13 +75,13 @@ export default function Menu({ session }: { session: Session }) {
       <Tab
         value={categories.indexOf(selectedCategory)}
         onChange={(e) => setSelectedCategory(categories[e])}
-        indicatorStyle={{ backgroundColor: '#28a745' }}
+        indicatorStyle={{ backgroundColor: '#ff9e4d' }}
       >
         {categories.map((category, index) => (
           <Tab.Item
             key={index}
             title={category}
-            titleStyle={{ color: selectedCategory === category ? '#28a745' : 'black' }}
+            titleStyle={{ color: selectedCategory === category ? '#ff9e4d' : 'black' }}
           />
         ))}
       </Tab>
@@ -110,44 +112,42 @@ export default function Menu({ session }: { session: Session }) {
   };
 
   const createOrder = async () => {
-  try {
-    // Step 1: Create a new order in the `orders` table
-    const { data: orderData, error: orderError } = await supabase
-    .from('Orders_testing')
-    .insert({ user_id: session.user.id, created_at: new Date() })
-    .select();
+    try {
+      const { data: orderData, error: orderError } = await supabase
+        .from('Orders_testing')
+        .insert({ user_id: session.user.id, created_at: new Date() })
+        .select();
   
-    if (orderError) throw new Error(orderError.message);
+      if (orderError) throw new Error(orderError.message);
   
-    const orderId = orderData[0].id;
+      const orderId = orderData[0].id;
   
-    // Step 2: Add each item with a quantity > 0 to the `orderitems` table
-    const orderItems = Object.entries(quantities)
-    .filter(([_, quantity]) => quantity > 0)
-    .map(([itemId, quantity]) => ({
-      menuItem_id: itemId,
-      order_id: orderId,
-      quantity,
-    }));
+      const orderItems = Object.entries(quantities)
+        .filter(([_, quantity]) => quantity > 0)
+        .map(([itemId, quantity]) => ({
+          menuItem_id: itemId,
+          order_id: orderId,
+          quantity,
+        }));
   
-    if (orderItems.length > 0) {
-    const { error: itemsError } = await supabase.from('OrderItems_testing').insert(orderItems);
-    if (itemsError) throw new Error(itemsError.message);
+      if (orderItems.length > 0) {
+        const { error: itemsError } = await supabase.from('OrderItems_testing').insert(orderItems);
+        if (itemsError) throw new Error(itemsError.message);
+      }
+  
+      // Pass the `orderId` to the order page
+      navigation.navigate('Order', { orderId });
+    } catch (error) {
+      if (error instanceof Error) {
+        console.error('Error creating order:', error.message);
+        Alert.alert('Error', error.message);
+      } else {
+        console.error('Error creating order:', error);
+        Alert.alert('Error', 'An unknown error occurred');
+      }
     }
-  
-    Alert.alert('Order Created', `Order ID: ${orderId}`);
-    setQuantities({});
-  } catch (error) {
-    if (error instanceof Error) {
-    console.error('Error creating order:', error.message);
-    Alert.alert('Error', error.message);
-    } else {
-    console.error('Error creating order:', error);
-    Alert.alert('Error', 'An unknown error occurred');
-    }
-  }
   };
-
+  
   const renderMenuItem = ({ item }: { item: MenuItem & { imageUrl: string } }) => {
   const quantity = quantities[item.id] || 0;
 
@@ -183,7 +183,7 @@ export default function Menu({ session }: { session: Session }) {
       renderItem={renderMenuItem}
       contentContainerStyle={styles.container}
       ListFooterComponent={
-        <Button title="Create Order" onPress={createOrder} color="#28a745" />
+        <Button buttonStyle={styles.confirmButton} title="Create Order" onPress={createOrder} color="#ff9e4d" />
       }
       />
     </View>

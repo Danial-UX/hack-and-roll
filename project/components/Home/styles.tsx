@@ -13,13 +13,13 @@ export const styles = StyleSheet.create({
         padding: 20,
         borderRadius: 10,
         margin: 16,
-        width: width-30
+        width: width-50
     },
     rewardsbutton: {
         backgroundColor: '#ff9e4d',
         padding: 20,
         borderRadius: 10,
         margin: 16,
-        width: width-30
+        width: width-50
     },
 });
