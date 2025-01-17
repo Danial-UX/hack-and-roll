@@ -9,6 +9,7 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { Ionicons } from '@expo/vector-icons';
 import Home from './components/Home/Home'
 import Order from './components/Order/Order'
+import Payment from './components/Payment/Payment'
 
 const Tab = createBottomTabNavigator();
 
@@ -28,6 +29,10 @@ function MenuScreen({ session }: { session: Session }) {
 
 function OrderScreen({ session }: { session: Session }) {
   return <Order session={session} />;
+}
+
+function PaymentScreen({ session }: { session: Session }) {
+  return <Payment session={session} />;
 }
 
 export default function App() {
@@ -59,7 +64,9 @@ export default function App() {
                   iconName = focused ? 'fast-food' : 'fast-food-outline';
                 } else if (route.name === 'Order') {
                   iconName = focused ? 'cart' : 'cart-outline';
-                }
+                } else if (route.name === 'Payment') {
+                  iconName = focused ? 'card' : 'card-outline';
+                } 
                 return <Ionicons name={iconName} size={size} color={color} />;
               },
               tabBarActiveTintColor: '#ff9e4d',
@@ -69,6 +76,7 @@ export default function App() {
             <Tab.Screen name="Home" children={() => <HomeScreen session={session} />} />
             <Tab.Screen name="Menu" children={() => <MenuScreen session={session} />} />
             <Tab.Screen name="Order" children={() => <OrderScreen session={session} />} />
+            <Tab.Screen name="Payment" children={() => <PaymentScreen session={session} />} />
             <Tab.Screen name="Account" children={() => <AccountScreen session={session} />} />
           </Tab.Navigator>
         </NavigationContainer>
